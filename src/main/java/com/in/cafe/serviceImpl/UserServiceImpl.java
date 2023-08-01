@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -108,19 +107,18 @@ public class UserServiceImpl implements UserService {
         log.info("something went wrong in login business logic");
         return new ResponseEntity<>("{\"Message\":\"Bad Credentials\"}", HttpStatus.BAD_REQUEST);
     }
-    public ResponseEntity<List<UserWrapper>> getAllUser(){
-        try{
-                if(jwtFilter.isAdmin()){
-                    List<UserWrapper> userList=userDao.getAllUser();
-                    return new ResponseEntity<>(userList,HttpStatus.OK);
-                }
-                else {
-                    return new ResponseEntity<List<UserWrapper>>(new ArrayList<>(),HttpStatus.UNAUTHORIZED);
-                }
-        }
-        catch (Exception e){
+
+    public ResponseEntity<List<UserWrapper>> getAllUser() {
+        try {
+            if (jwtFilter.isAdmin()) {
+                List<UserWrapper> userList = userDao.getAllUser();
+                return new ResponseEntity<>(userList, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<List<UserWrapper>>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<List<UserWrapper>>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<List<UserWrapper>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

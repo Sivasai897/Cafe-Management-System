@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
 @Slf4j
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -36,21 +37,21 @@ public class JwtFilter extends OncePerRequestFilter {
         } else {
             log.info("Part 1:\ninto Else of doFilter Method");
             String authorizationHeader = request.getHeader("Authorization");
-            log.info("Part 2:\nRetrieved the authorization Header"+authorizationHeader);
+            log.info("Part 2:\nRetrieved the authorization Header" + authorizationHeader);
             String token = null;
 
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 log.info("Part 3:\nchecked authrizationheader is null or start with Bearer");
                 token = authorizationHeader.substring(7);
-                log.info("Part 4:\nRetrieved the token from Authorization header"+"\nToken:"+token);
+                log.info("Part 4:\nRetrieved the token from Authorization header" + "\nToken:" + token);
                 userName = jwtUtil.extractUsername(token);
                 claims = jwtUtil.extractAllClaims(token);
-                log.info("Part 5:\nRetrieved the user Name and Claims"+"\nUserName:"+userName+"\nClaims{}:"+claims);
+                log.info("Part 5:\nRetrieved the user Name and Claims" + "\nUserName:" + userName + "\nClaims{}:" + claims);
             }
 
             if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                log.info("Part 6:\nInto security context Holder condition"+
-                          SecurityContextHolder.getContext().getAuthentication());
+                log.info("Part 6:\nInto security context Holder condition" +
+                        SecurityContextHolder.getContext().getAuthentication());
                 UserDetails userDetails = service.loadUserByUsername(userName);
                 if (jwtUtil.isTokenValid(token, userDetails)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
@@ -68,11 +69,11 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     public Boolean isAdmin() {
-        return "admin" .equalsIgnoreCase((String) claims.get("role"));
+        return "admin".equalsIgnoreCase((String) claims.get("role"));
     }
 
     public Boolean isUser() {
-        return "user" .equalsIgnoreCase((String) claims.get("user"));
+        return "user".equalsIgnoreCase((String) claims.get("user"));
     }
 
     public String getCurrentUser() {

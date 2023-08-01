@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface UserDao extends JpaRepository<User,Integer> {
+public interface UserDao extends JpaRepository<User, Integer> {
 
     List<User> FindByEmailId(@Param("email") String email, @Param("contactNumber") String contactNumber);
 

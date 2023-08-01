@@ -1,7 +1,6 @@
 package com.in.cafe.POJO;
 
 import jakarta.persistence.*;
-import jdk.jfr.Name;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,15 +15,15 @@ import org.hibernate.annotations.DynamicUpdate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="imagedata")
+@Table(name = "imagedata")
 public class ImageData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="image_id")
+    @Column(name = "image_id")
     private Integer id;
 
     @Lob
-    @Column(name="image",columnDefinition = "LONGBLOB")
+    @Column(name = "image", columnDefinition = "LONGBLOB")
     private byte[] imageData;
 }

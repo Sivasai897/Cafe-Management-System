@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 
 @RestController
@@ -29,7 +28,7 @@ public class ImageDataRest {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?>  getImageByName(@PathVariable("id") Integer id){
+    public ResponseEntity<?> getImageByName(@PathVariable("id") Integer id) {
         byte[] image = imageDataService.getImage(id);
 
         return ResponseEntity.status(HttpStatus.OK)

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -18,15 +17,14 @@ public class ImageService {
     @Autowired
     private ImageDao imageDao;
 
-    public String uploadImage(MultipartFile file) throws  IOException {
-
+    public String uploadImage(MultipartFile file) throws IOException {
 
 
         imageDao.save(ImageData.builder()
                 .imageData(ImageUtils.compressImage(file.getBytes())).build());
 
-        return new String("Image uploaded successfully: " +
-                file.getOriginalFilename());
+        return "Image uploaded successfully: " +
+                file.getOriginalFilename();
 
     }
 

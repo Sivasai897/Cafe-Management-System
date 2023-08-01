@@ -19,38 +19,36 @@ public class UserRestImpl implements UserRest {
 
     @Autowired
     UserService userService;
+
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
-       try{
-           return userService.signUp(requestMap);
-       }
-       catch (Exception e){
-           e.printStackTrace();
-       }
+        try {
+            return userService.signUp(requestMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return CafeUtils.getResponseEntity(CafeConstants.Wrong_Message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<String> login(Map<String, String> requestMap) {
-        try{
+        try {
             return userService.login(requestMap);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return CafeUtils.getResponseEntity(CafeConstants.Wrong_Message,HttpStatus.INTERNAL_SERVER_ERROR);
+        return CafeUtils.getResponseEntity(CafeConstants.Wrong_Message, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
     @Override
     public ResponseEntity<List<UserWrapper>> getAllUser() {
-        try{
+        try {
             return userService.getAllUser();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

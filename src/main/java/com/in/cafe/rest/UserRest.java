@@ -14,11 +14,11 @@ import java.util.Map;
 public interface UserRest {
 
     @PostMapping(path = "/signup")
-    public ResponseEntity<String> signUp(@RequestBody(required = true) Map<String,String> requestMap);
+    ResponseEntity<String> signUp(@RequestBody(required = true) Map<String, String> requestMap);
 
-    @PostMapping(path="/login")
-    public ResponseEntity<String> login(@RequestBody(required = true) Map<String,String> requestMap);
+    @PostMapping(path = "/login")
+    ResponseEntity<String> login(@RequestBody(required = true) Map<String, String> requestMap);
 
-    @GetMapping(path="/get")
-    public ResponseEntity<List<UserWrapper>> getAllUser();
+    @GetMapping(path = "/get")
+    ResponseEntity<List<UserWrapper>> getAllUser();
 }
