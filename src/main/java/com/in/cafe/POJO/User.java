@@ -1,6 +1,7 @@
 package com.in.cafe.POJO;
 
 import jakarta.persistence.*;
+import jdk.jfr.Name;
 import lombok.Data;
 import lombok.Generated;
 import org.hibernate.annotations.DynamicInsert;
@@ -8,7 +9,13 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import java.io.Serializable;
 
-@NamedQuery(name="User.FindByEmailId",query = "select u from User u where u.email=:email OR u.contactNumber=:contactNumber")
+@NamedQueries(
+        {
+                @NamedQuery(name="User.FindByEmailId",query = "select u from User u where u.email=:email OR u.contactNumber=:contactNumber"),
+                @NamedQuery(name="User.FIndByUserName",query="select u from User u where u.email=:email")
+        }
+)
+
 
 
 @Data
