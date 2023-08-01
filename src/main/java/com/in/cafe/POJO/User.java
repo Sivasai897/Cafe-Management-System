@@ -1,18 +1,18 @@
 package com.in.cafe.POJO;
 
 import jakarta.persistence.*;
-import jdk.jfr.Name;
 import lombok.Data;
-import lombok.Generated;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @NamedQueries(
         {
                 @NamedQuery(name="User.FindByEmailId",query = "select u from User u where u.email=:email OR u.contactNumber=:contactNumber"),
-                @NamedQuery(name="User.FIndByUserName",query="select u from User u where u.email=:email")
+                @NamedQuery(name="User.FIndByUserName",query="select u from User u where u.email=:email"),
+                @NamedQuery(name="User.getAllUser",query = "select new com.in.cafe.wrapper.UserWrapper(u.id,u.name,u.email,u.contactNumber,u.status) from User u where u.role='user'")
         }
 )
 
@@ -25,6 +25,7 @@ import java.io.Serializable;
 @Table(name="user")
 public class User implements Serializable {
 
+    @Serial
     private static final long serialVersionUID=1L;
 
     @Id
