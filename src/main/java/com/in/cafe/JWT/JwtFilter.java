@@ -30,7 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("Step F:\nInto the doFilterInternal Method");
-        if (request.getServletPath().matches("/user/login|/user/forgotPassword")) {
+        if (request.getServletPath().matches("/user/login|/user/forgotPassword|/user/signup")) {
             log.info("Step G:\nPassing request and response to doFilter  Method");
             filterChain.doFilter(request, response);
         } else {
