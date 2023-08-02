@@ -8,6 +8,7 @@ import com.in.cafe.constants.CafeConstants;
 import com.in.cafe.dao.UserDao;
 import com.in.cafe.service.UserService;
 import com.in.cafe.utils.CafeUtils;
+import com.in.cafe.utils.EmailUtils;
 import com.in.cafe.wrapper.UserWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class UserServiceImpl implements UserService {
     JwtUtil jwtUtil;
     @Autowired
     JwtFilter jwtFilter;
+    @Autowired
+    EmailUtils emailUtils;
 
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
@@ -126,11 +129,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try {
-            Integer id = Integer.parseInt(requestMap.get("id"));
             if (jwtFilter.isAdmin()) {
+                Integer id = Integer.parseInt(requestMap.get("id"));
+                String status=requestMap.get("status");
                 Optional<User> optionalUser = userDao.findById(id);
                 if (optionalUser.isPresent()) {
-                    userDao.updateStatus(id, requestMap.get("status"));
+                    userDao.updateStatus(id, status);
+                    sendEmailToAllAdmin(status,optionalUser.get().getEmail(),userDao.getAllAdmin());
                     return CafeUtils.getResponseEntity("SUCESSFULLY UPDATED USER STATUS", HttpStatus.OK);
                 } else {
                     return CafeUtils.getResponseEntity("USER DOES NOT EXIST", HttpStatus.OK);
@@ -142,5 +147,20 @@ public class UserServiceImpl implements UserService {
                 e.printStackTrace();
         }
         return CafeUtils.getResponseEntity(CafeConstants.Wrong_Message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private void sendEmailToAllAdmin(String status, String user, List<String> allAdmin) {
+        String currentAdminEmail=jwtFilter.getCurrentUser();
+        allAdmin.remove(currentAdminEmail);
+        if(status!=null&&status.equalsIgnoreCase("true")){
+            emailUtils.sendSimpleMessage(currentAdminEmail,"ACCOUNT APPROVED",
+                    "User:-"+user+"\nis Approved By \nAdmin:-"+currentAdminEmail,allAdmin);
+        }
+        else {
+            emailUtils.sendSimpleMessage(currentAdminEmail,"ACCOUNT Diabled",
+                    "User:-"+user+"\nis Disabled By \nAdmin:-"+currentAdminEmail,allAdmin);
+        }
+
+
     }
 }
