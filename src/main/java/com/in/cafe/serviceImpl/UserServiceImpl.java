@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -92,7 +93,7 @@ public class UserServiceImpl implements UserService {
                 //log.info("Step4:\nuser is succesfully authenticated");
                 if (customerUserDetailService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
                     // log.info("Step6:\nuser status is active");
-                    return new ResponseEntity<String>("{\"token\":\"" +
+                    return new ResponseEntity<>("{\"token\":\"" +
                             jwtUtil.generateToken(customerUserDetailService.getUserDetail().getEmail(),
                                     customerUserDetailService.getUserDetail().getRole()) + "\"}", HttpStatus.OK);
                 } else {
@@ -114,11 +115,32 @@ public class UserServiceImpl implements UserService {
                 List<UserWrapper> userList = userDao.getAllUser();
                 return new ResponseEntity<>(userList, HttpStatus.OK);
             } else {
-                return new ResponseEntity<List<UserWrapper>>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<List<UserWrapper>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> update(Map<String, String> requestMap) {
+        try {
+            Integer id = Integer.parseInt(requestMap.get("id"));
+            if (jwtFilter.isAdmin()) {
+                Optional<User> optionalUser = userDao.findById(id);
+                if (optionalUser.isPresent()) {
+                    userDao.updateStatus(id, requestMap.get("status"));
+                    return CafeUtils.getResponseEntity("SUCESSFULLY UPDATED USER STATUS", HttpStatus.OK);
+                } else {
+                    return CafeUtils.getResponseEntity("USER DOES NOT EXIST", HttpStatus.OK);
+                }
+            } else {
+                return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
+        return CafeUtils.getResponseEntity(CafeConstants.Wrong_Message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
