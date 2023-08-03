@@ -1,8 +1,11 @@
 package com.in.cafe.utils;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +23,7 @@ public class EmailUtils {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
-        if (!list.isEmpty() && list.size() > 0)
+        if (!list.isEmpty())
             message.setCc(getCcArray(list));
         javaMailSender.send(message);
     }
@@ -33,4 +36,16 @@ public class EmailUtils {
         }
         return ccArray;
     }
+
+    public void forgotPassword(String to,String subject,String password) throws MessagingException{
+        MimeMessage message=javaMailSender.createMimeMessage();
+        MimeMessageHelper helper=new MimeMessageHelper(message,true);
+        helper.setFrom("sivasaimudadla2002@gmail.com");
+        helper.setTo(to);
+        helper.setSubject(subject);
+        String htmlMsg = "<p><b>Your Login details for Cafe Management System</b><br><b>Email: </b> " + to + " <br><b>Password: </b> " + password + "<br><a href=\"http://localhost:8080/login\">Click here to login</a></p>";
+        message.setContent(htmlMsg,"text/html");
+        javaMailSender.send(message);
+    }
+
 }

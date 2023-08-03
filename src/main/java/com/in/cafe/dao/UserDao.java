@@ -13,7 +13,7 @@ public interface UserDao extends JpaRepository<User, Integer> {
 
     List<User> FindByEmailId(@Param("email") String email, @Param("contactNumber") String contactNumber);
 
-    User FIndByUserName(@Param("email") String eamil);
+    User FIndByUserName(@Param("email") String email);
 
     List<UserWrapper> getAllUser();
 
@@ -22,4 +22,6 @@ public interface UserDao extends JpaRepository<User, Integer> {
     void updateStatus(@Param("id") Integer id, @Param("status") String status);
 
     List<String> getAllAdmin();
+
+    User findByEmail(String email);
 }

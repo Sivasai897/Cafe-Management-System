@@ -19,10 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -131,11 +128,11 @@ public class UserServiceImpl implements UserService {
         try {
             if (jwtFilter.isAdmin()) {
                 Integer id = Integer.parseInt(requestMap.get("id"));
-                String status=requestMap.get("status");
+                String status = requestMap.get("status");
                 Optional<User> optionalUser = userDao.findById(id);
                 if (optionalUser.isPresent()) {
                     userDao.updateStatus(id, status);
-                    sendEmailToAllAdmin(status,optionalUser.get().getEmail(),userDao.getAllAdmin());
+                    sendEmailToAllAdmin(status, optionalUser.get().getEmail(), userDao.getAllAdmin());
                     return CafeUtils.getResponseEntity("SUCESSFULLY UPDATED USER STATUS", HttpStatus.OK);
                 } else {
                     return CafeUtils.getResponseEntity("USER DOES NOT EXIST", HttpStatus.OK);
@@ -144,21 +141,68 @@ public class UserServiceImpl implements UserService {
                 return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception e) {
-                e.printStackTrace();
+            e.printStackTrace();
+        }
+        return CafeUtils.getResponseEntity(CafeConstants.Wrong_Message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> checkToken() {
+        return CafeUtils.getResponseEntity("true", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> changePassword(Map<String, String> requestMap) {
+        try {
+            String oldPassword = requestMap.get("oldPassword");
+            String newPassword1 = requestMap.get("newPassword1");
+            String newPassword2 = requestMap.get("newPassword2");
+            String email = jwtFilter.getCurrentUser();
+            User user = userDao.findByEmail(email);
+            String currentPassword = user.getPassword();
+            if (oldPassword.equals(currentPassword)) {
+                if (!(oldPassword.equals(newPassword1)) && (newPassword2.equals(newPassword2))) {
+                    user.setPassword(newPassword1);
+                    userDao.save(user);
+                    return CafeUtils.getResponseEntity("Successfully Changed Password", HttpStatus.OK);
+                } else if (oldPassword.equals(newPassword1) && newPassword1.equals(newPassword2)) {
+                    return CafeUtils.getResponseEntity("YOU ENTERED OLD PASSWORD AS NEW PASSWORD PLEASE ENTER A NEW PASSWORD", HttpStatus.OK);
+                } else {
+                    return CafeUtils.getResponseEntity("YOU ENTERED INCORRECT PASSWORD SECOND TIME", HttpStatus.OK);
+                }
+            } else {
+                return CafeUtils.getResponseEntity("YOU ENTERED WRONG OLD PASSWORD", HttpStatus.BAD_REQUEST);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
+        try {
+            User user = userDao.findByEmail(requestMap.get("email"));
+            if (!Objects.isNull(user)) {
+                emailUtils.forgotPassword(user.getEmail(),"Credentials By Cafe Management System",user.getPassword());
+            }
+            return CafeUtils.getResponseEntity("check your mail for credentials",HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return CafeUtils.getResponseEntity(CafeConstants.Wrong_Message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private void sendEmailToAllAdmin(String status, String user, List<String> allAdmin) {
-        String currentAdminEmail=jwtFilter.getCurrentUser();
+        String currentAdminEmail = jwtFilter.getCurrentUser();
         allAdmin.remove(currentAdminEmail);
-        if(status!=null&&status.equalsIgnoreCase("true")){
-            emailUtils.sendSimpleMessage(currentAdminEmail,"ACCOUNT APPROVED",
-                    "User:-"+user+"\nis Approved By \nAdmin:-"+currentAdminEmail,allAdmin);
-        }
-        else {
-            emailUtils.sendSimpleMessage(currentAdminEmail,"ACCOUNT Diabled",
-                    "User:-"+user+"\nis Disabled By \nAdmin:-"+currentAdminEmail,allAdmin);
+        if (status != null && status.equalsIgnoreCase("true")) {
+            emailUtils.sendSimpleMessage(currentAdminEmail, "ACCOUNT APPROVED",
+                    "User:-" + user + "\nis Approved By \nAdmin:-" + currentAdminEmail, allAdmin);
+        } else {
+            emailUtils.sendSimpleMessage(currentAdminEmail, "ACCOUNT Diabled",
+                    "User:-" + user + "\nis Disabled By \nAdmin:-" + currentAdminEmail, allAdmin);
         }
 
 

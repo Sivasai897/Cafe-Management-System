@@ -42,7 +42,7 @@ public class SecurityConfig {
         log.info("Step C:\nInto Security Filter Chain function");
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/user/login", "/user/signup", "/user/forgotpassword")
+                        .requestMatchers("/user/login", "/user/signup", "/user/forgotPassword")
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
