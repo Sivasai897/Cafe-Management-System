@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Ignore Properties file
-.properties
+.properties!/src/main/resources/application.properties

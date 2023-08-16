@@ -1,5 +1,6 @@
 package com.in.cafe.rest;
 
+import com.in.cafe.dto.UserDTO;
 import com.in.cafe.wrapper.UserWrapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,9 @@ public interface UserRest {
 
     @PostMapping(path = "/signup")
     ResponseEntity<String> signUp(@RequestBody(required = true) Map<String, String> requestMap);
+
+//    @PostMapping(path="/register")
+//    ResponseEntity<String> register(@RequestBody(required = true)UserDTO userDTO);
 
     @PostMapping(path = "/login")
     ResponseEntity<String> login(@RequestBody(required = true) Map<String, String> requestMap);

@@ -1,4 +1,4 @@
-package com.in.cafe.JWT;
+package com.in.cafe.jwt;
 
 import com.in.cafe.dao.UserDao;
 import lombok.extern.slf4j.Slf4j;

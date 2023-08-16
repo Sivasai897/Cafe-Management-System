@@ -1,4 +1,4 @@
-package com.in.cafe.JWT;
+package com.in.cafe.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

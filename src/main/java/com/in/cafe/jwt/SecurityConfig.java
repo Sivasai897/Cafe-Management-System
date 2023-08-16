@@ -1,4 +1,4 @@
-package com.in.cafe.JWT;
+package com.in.cafe.jwt;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class SecurityConfig {
         log.info("Step C:\nInto Security Filter Chain function");
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/user/login", "/user/signup", "/user/forgotPassword")
+                        .requestMatchers("/user/login", "/user/signup", "/user/forgotPassword","/actuator")
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

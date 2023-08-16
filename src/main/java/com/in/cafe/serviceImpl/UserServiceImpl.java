@@ -1,8 +1,8 @@
 package com.in.cafe.serviceImpl;
 
-import com.in.cafe.JWT.CustomerUserDetailService;
-import com.in.cafe.JWT.JwtFilter;
-import com.in.cafe.JWT.JwtUtil;
+import com.in.cafe.jwt.CustomerUserDetailService;
+import com.in.cafe.jwt.JwtFilter;
+import com.in.cafe.jwt.JwtUtil;
 import com.in.cafe.POJO.User;
 import com.in.cafe.constants.CafeConstants;
 import com.in.cafe.dao.UserDao;

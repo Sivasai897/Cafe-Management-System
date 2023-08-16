@@ -1,4 +1,4 @@
-package com.in.cafe.JWT;
+package com.in.cafe.jwt;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -31,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("Step F:\nInto the doFilterInternal Method");
-        if (request.getServletPath().matches("/user/login|/user/forgotPassword|/user/signup")) {
+        if (request.getServletPath().matches("/user/login|/user/forgotPassword|/user/signup|/actuator")) {
             log.info("Step G:\nPassing request and response to doFilter  Method");
             filterChain.doFilter(request, response);
         } else {
