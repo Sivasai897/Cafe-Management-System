@@ -1,4 +1,4 @@
-package com.in.cafe.serviceImpl;
+package com.in.cafe.serviceimpl;
 
 import com.in.cafe.POJO.ImageData;
 import com.in.cafe.dao.ImageDao;

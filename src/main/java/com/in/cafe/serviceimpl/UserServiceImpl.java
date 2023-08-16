@@ -1,4 +1,4 @@
-package com.in.cafe.serviceImpl;
+package com.in.cafe.serviceimpl;
 
 import com.in.cafe.jwt.CustomerUserDetailService;
 import com.in.cafe.jwt.JwtFilter;
@@ -111,7 +111,8 @@ public class UserServiceImpl implements UserService {
 
     public ResponseEntity<List<UserWrapper>> getAllUser() {
         try {
-            if (jwtFilter.isAdmin()) {
+            Boolean isAdmin=jwtFilter.isAdmin();
+            if (Boolean.TRUE.equals(isAdmin)) {
                 List<UserWrapper> userList = userDao.getAllUser();
                 return new ResponseEntity<>(userList, HttpStatus.OK);
             } else {
@@ -161,7 +162,7 @@ public class UserServiceImpl implements UserService {
             User user = userDao.findByEmail(email);
             String currentPassword = user.getPassword();
             if (oldPassword.equals(currentPassword)) {
-                if (!(oldPassword.equals(newPassword1)) && (newPassword2.equals(newPassword2))) {
+                if (!(oldPassword.equals(newPassword1)) && (newPassword1.equals(newPassword2))) {
                     user.setPassword(newPassword1);
                     userDao.save(user);
                     return CafeUtils.getResponseEntity("Successfully Changed Password", HttpStatus.OK);

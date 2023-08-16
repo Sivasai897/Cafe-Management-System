@@ -1,6 +1,6 @@
-package com.in.cafe.restImpl;
+package com.in.cafe.restimpl;
 
-import com.in.cafe.serviceImpl.ImageService;
+import com.in.cafe.serviceimpl.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

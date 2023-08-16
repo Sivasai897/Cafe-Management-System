@@ -1,4 +1,4 @@
-package com.in.cafe.restImpl;
+package com.in.cafe.restimpl;
 
 import com.in.cafe.POJO.Category;
 import com.in.cafe.constants.CafeConstants;
@@ -37,5 +37,15 @@ public class CategoryRestImpl implements CategoryRest {
             e.printStackTrace();
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> updateCategory(Map<String, String> requestMap) {
+        try{
+            return categoryService.updateCategory(requestMap);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return CafeUtils.getResponseEntity(CafeConstants.Wrong_Message,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

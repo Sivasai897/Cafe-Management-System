@@ -1,4 +1,4 @@
-package com.in.cafe.restImpl;
+package com.in.cafe.restimpl;
 
 import com.in.cafe.constants.CafeConstants;
 import com.in.cafe.rest.UserRest;
