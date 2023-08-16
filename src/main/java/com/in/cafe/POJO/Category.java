@@ -9,7 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @NamedQueries(
-        @NamedQuery(name="Category.getAllCategory",query = "select c from Category c")
+        @NamedQuery(name = "Category.getAllCategory", query = "select c from Category c")
 )
 @Data
 @Entity

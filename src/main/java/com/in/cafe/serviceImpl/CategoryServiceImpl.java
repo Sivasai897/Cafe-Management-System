@@ -1,5 +1,6 @@
 package com.in.cafe.serviceImpl;
 
+import com.google.common.base.Strings;
 import com.in.cafe.POJO.Category;
 import com.in.cafe.constants.CafeConstants;
 import com.in.cafe.dao.CategoryDao;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -25,8 +28,8 @@ public class CategoryServiceImpl implements CategoryService {
         try {
             if (jwtFilter.isAdmin()) {
                 if (validateRequestMap(requestMap, false)) {
-                        categoryDao.save(getCategory(requestMap,false));
-                        return CafeUtils.getResponseEntity("Category Added Successfully",HttpStatus.OK);
+                    categoryDao.save(getCategory(requestMap, false));
+                    return CafeUtils.getResponseEntity("Category Added Successfully", HttpStatus.OK);
                 }
             } else {
                 return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
@@ -37,9 +40,22 @@ public class CategoryServiceImpl implements CategoryService {
         return CafeUtils.getResponseEntity(CafeConstants.Wrong_Message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @Override
+    public ResponseEntity<List<Category>> getAllCategory(String filterValue) {
+        try {
+            if (!Strings.isNullOrEmpty(filterValue) && filterValue.equalsIgnoreCase("true")) {
+                return new ResponseEntity<List<Category>>(categoryDao.getAllCategory(), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(categoryDao.findAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private Category getCategory(Map<String, String> requestMap, boolean isAdd) {
-        Category category=new Category();
-        if(isAdd){
+        Category category = new Category();
+        if (isAdd) {
             category.setId(Integer.parseInt(requestMap.get("id")));
         }
         category.setName(requestMap.get("name"));
