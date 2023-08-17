@@ -1,6 +1,6 @@
 package com.in.cafe.serviceimpl;
 
-import com.in.cafe.POJO.ImageData;
+import com.in.cafe.pojo.ImageData;
 import com.in.cafe.dao.ImageDao;
 import com.in.cafe.utils.ImageUtils;
 import jakarta.transaction.Transactional;

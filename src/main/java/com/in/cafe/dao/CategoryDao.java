@@ -1,6 +1,6 @@
 package com.in.cafe.dao;
 
-import com.in.cafe.POJO.Category;
+import com.in.cafe.pojo.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

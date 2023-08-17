@@ -3,7 +3,7 @@ package com.in.cafe.serviceimpl;
 import com.in.cafe.jwt.CustomerUserDetailService;
 import com.in.cafe.jwt.JwtFilter;
 import com.in.cafe.jwt.JwtUtil;
-import com.in.cafe.POJO.User;
+import com.in.cafe.pojo.User;
 import com.in.cafe.constants.CafeConstants;
 import com.in.cafe.dao.UserDao;
 import com.in.cafe.service.UserService;

@@ -1,7 +1,7 @@
 package com.in.cafe.serviceimpl;
 
 import com.google.common.base.Strings;
-import com.in.cafe.POJO.Category;
+import com.in.cafe.pojo.Category;
 import com.in.cafe.constants.CafeConstants;
 import com.in.cafe.dao.CategoryDao;
 import com.in.cafe.jwt.JwtFilter;

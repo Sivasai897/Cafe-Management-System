@@ -1,6 +1,6 @@
 package com.in.cafe.rest;
 
-import com.in.cafe.POJO.Category;
+import com.in.cafe.pojo.Category;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

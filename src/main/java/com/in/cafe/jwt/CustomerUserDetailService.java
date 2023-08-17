@@ -18,7 +18,7 @@ public class CustomerUserDetailService implements UserDetailsService {
     @Autowired
     UserDao userDao;
 
-    private com.in.cafe.POJO.User userDetail;
+    private com.in.cafe.pojo.User userDetail;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -33,7 +33,7 @@ public class CustomerUserDetailService implements UserDetailsService {
 
     }
 
-    public com.in.cafe.POJO.User getUserDetail() {
+    public com.in.cafe.pojo.User getUserDetail() {
         log.info("Step5c:\nInto the UserDetails Method {}" + userDetail);
         return userDetail;
     }

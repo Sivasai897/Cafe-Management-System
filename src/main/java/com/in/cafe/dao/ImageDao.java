@@ -1,6 +1,6 @@
 package com.in.cafe.dao;
 
-import com.in.cafe.POJO.ImageData;
+import com.in.cafe.pojo.ImageData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
