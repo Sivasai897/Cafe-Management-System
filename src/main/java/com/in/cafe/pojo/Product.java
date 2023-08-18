@@ -7,6 +7,10 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import java.io.Serial;
 import java.io.Serializable;
+
+@NamedQueries(
+        @NamedQuery(name="Product.getAllProduct",query = "select new com.in.cafe.wrapper.ProductWrapper(p.id,p.name,p.description,p.price,p.status,p.category.id,p.category.name) from Product p")
+)
 @Data
 @Entity
 @DynamicUpdate

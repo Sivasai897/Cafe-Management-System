@@ -8,12 +8,17 @@ import com.in.cafe.pojo.Category;
 import com.in.cafe.pojo.Product;
 import com.in.cafe.service.ProductService;
 import com.in.cafe.utils.CafeUtils;
+import com.in.cafe.wrapper.ProductWrapper;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -44,6 +49,39 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
         }
         return CafeUtils.getResponseEntity(CafeConstants.Wrong_Message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<List<ProductWrapper>> getAllProduct() {
+        try{
+            return new ResponseEntity<>(productDao.getAllProduct(),HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> updateProduct(Map<String, String> requestMap) {
+        try{
+            Boolean isAdmin=jwtFilter.isAdmin();
+            if(Boolean.TRUE.equals(isAdmin)){
+                Optional<Product> product=productDao.findById(Integer.parseInt(requestMap.get("id")));
+                if(product.isPresent()){
+                    Product product1=getProductFromMap(requestMap,true);
+                    product1.setStatus(product.get().getStatus());
+                    productDao.save(product1);
+                    return CafeUtils.getResponseEntity("Product successfuly updated",HttpStatus.OK);
+                } else {
+                    return CafeUtils.getResponseEntity("Product Id Does Not Exist",HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS,HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return CafeUtils.getResponseEntity(CafeConstants.Wrong_Message,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private Product getProductFromMap(Map<String, String> requestMap, boolean isUpdate) {
