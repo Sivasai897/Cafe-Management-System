@@ -1,6 +1,5 @@
 package com.in.cafe.rest;
 
-import com.in.cafe.pojo.Product;
 import com.in.cafe.wrapper.ProductWrapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +12,8 @@ public interface ProductRest {
 
     @PostMapping(path = "/add")
     ResponseEntity<String> addNewProduct(@RequestBody(required = true) Map<String, String> requestMap);
-
     @GetMapping(path = "/get")
     ResponseEntity<List<ProductWrapper>> getAllProdut();
-
     @PostMapping(path = "/update")
     ResponseEntity<String> updateProduct(@RequestBody(required = true) Map<String, String> requestMap);
     @PostMapping(path = "/delete/{id}")
